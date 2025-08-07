@@ -1,4 +1,37 @@
-FROM ubuntu:latest
-LABEL authors="katekiselevich"
+# ---------------------------------------------
+# Стадия сборки: Maven + JDK 17
+# Используется официальный образ Maven для сборки Java-проектов
+# ---------------------------------------------
+FROM maven:3.9.4-eclipse-temurin-17 AS builder
 
-ENTRYPOINT ["top", "-b"]
+# Рабочая директория внутри контейнера
+WORKDIR /app
+
+# Сначала копируем только pom.xml — это позволяет Docker закэшировать зависимости
+COPY pom.xml .
+
+# Загружаем все зависимости, не выполняя сборку
+RUN mvn dependency:go-offline
+
+# Копируем оставшийся код проекта
+COPY src ./src
+
+# Собираем проект (создаётся .jar файл в target/)
+RUN mvn clean package -DskipTests
+
+# ---------------------------------------------
+# Стадия запуска: лёгкий образ только с JDK
+# ---------------------------------------------
+FROM eclipse-temurin:17-jdk-jammy
+
+# Рабочая директория
+WORKDIR /app
+
+# Копируем готовый .jar из предыдущего этапа
+COPY --from=builder /app/target/*.jar app.jar
+
+# Указываем порт, на котором будет работать приложение
+EXPOSE 8588
+
+# Команда запуска приложения
+ENTRYPOINT ["java", "-jar", "app.jar"]
