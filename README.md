@@ -11,6 +11,6 @@ Dependencies: Spring Web, Spring Security, ~~Lombok~~, Spring Boot DevTools, OAu
 
 ---
 
-Postman Collection [undefined/workspace/goose/collection/12955971-cec3a74d-913f-4fa7-bcd4-09d83447a902?action=share&creator=12955971]()
+Postman Collection https://www.postman.com/first5-7019/workspace/goose/request/12955971-60e1dfb4-534a-411e-8f48-bdf29d95f314?action=share&source=copy-link&creator=12955971
 
 ***
