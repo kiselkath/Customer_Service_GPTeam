@@ -22,7 +22,7 @@ public class CustomerController {
 
     // Создание нового пользователя
     @PostMapping
-    public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
+    public ResponseEntity<Customer> registerCustomer(@RequestBody Customer customer) {
         Customer created = customerService.create(customer);
         return ResponseEntity.ok(created);
     }
