@@ -1,5 +1,6 @@
 package org.example.CustomerServiceGP.service;
 
+import org.example.CustomerServiceGP.dto.response.CustomerInfoResponse;
 import org.example.CustomerServiceGP.model.Address;
 import org.example.CustomerServiceGP.model.Customer;
 import org.example.CustomerServiceGP.model.Sizes;
@@ -33,8 +34,15 @@ public class CustomerService {
     /**
      * Find customer by userId
      */
-    public Optional<Customer> getById(String userId) {
-        return customerRepository.findById(userId);
+    public CustomerInfoResponse getCustomerInfo(String userId) {
+        Customer customer = customerRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Customer not found: " + userId));
+
+        return CustomerInfoResponse.builder()
+                .userId(customer.getUserId())
+                .name(customer.getName())
+                .vip(customer.isVip())
+                .build();
     }
 
     /**

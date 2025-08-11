@@ -1,5 +1,6 @@
 package org.example.CustomerServiceGP.controller;
 
+import org.example.CustomerServiceGP.dto.response.CustomerInfoResponse;
 import org.example.CustomerServiceGP.model.Address;
 import org.example.CustomerServiceGP.model.Customer;
 import org.example.CustomerServiceGP.model.Sizes;
@@ -29,11 +30,10 @@ public class CustomerController {
 
     // Получение пользователя по ID
     @GetMapping("/{userId}")
-    public ResponseEntity<Customer> getCustomer(@PathVariable String userId) {
-        Optional<Customer> customer = customerService.getById(userId);
-        return customer.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<CustomerInfoResponse> getCustomer(@PathVariable String userId) {
+        return ResponseEntity.ok(customerService.getCustomerInfo(userId));
     }
+
 
     // Обновление имени
     @PutMapping("/{userId}/name")
